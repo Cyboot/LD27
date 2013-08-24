@@ -16,12 +16,15 @@ import javax.swing.JPanel;
 import ld27.util.ImageLoader;
 
 public class GameEngine extends Canvas implements KeyListener, Runnable {
-	private static final int	WIDTH			= 1000;
-	private static final int	HEIGHT			= 600;
+	public static final int	WIDTH			= 1024;
+	public static final int	HEIGHT			= 656;
 
-	public static long			currentFPS;
-	public static final int		FPS_TARGET		= 120;
-	public static final int		DELTA_TARGET	= 1000 / FPS_TARGET;
+	public static long		currentFPS;
+	public static final int	FPS_TARGET		= 120;
+	public static final int	DELTA_TARGET	= 1000 / FPS_TARGET;
+
+	private boolean			jump1;
+	private boolean			jump2;
 
 	public static void main(String[] args) {
 		GameEngine engine = new GameEngine();
@@ -98,7 +101,7 @@ public class GameEngine extends Canvas implements KeyListener, Runnable {
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		Game.g.render(g);
 
-		g.setColor(Color.red);
+		g.setColor(Color.yellow);
 		g.setFont(getFont());
 		g.drawString("FPS: " + currentFPS, WIDTH - 80, 20);
 
@@ -108,6 +111,8 @@ public class GameEngine extends Canvas implements KeyListener, Runnable {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+
+
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_UP:
 			Game.VK_UP = true;
@@ -125,7 +130,12 @@ public class GameEngine extends Canvas implements KeyListener, Runnable {
 			Game.VK_W = true;
 			break;
 		case KeyEvent.VK_A:
-			Game.VK_RIGHT = true;
+			Game.VK_A = true;
+			break;
+		case KeyEvent.VK_CONTROL:
+			if (!jump2)
+				Game.VK_CTRL = true;
+			jump2 = true;
 			break;
 		case KeyEvent.VK_ESCAPE:
 			System.exit(0);
@@ -152,7 +162,11 @@ public class GameEngine extends Canvas implements KeyListener, Runnable {
 			Game.VK_W = false;
 			break;
 		case KeyEvent.VK_A:
-			Game.VK_RIGHT = false;
+			Game.VK_A = false;
+			break;
+		case KeyEvent.VK_CONTROL:
+			Game.VK_CTRL = false;
+			jump2 = false;
 			break;
 		}
 
@@ -160,5 +174,6 @@ public class GameEngine extends Canvas implements KeyListener, Runnable {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
+		System.out.println(e.getKeyChar());
 	}
 }
