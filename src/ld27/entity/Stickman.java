@@ -20,40 +20,82 @@ public class Stickman extends CollisionEntity {
 
 	private BufferedImage		img_move_left		= ImageLoader.stickman_move_left;
 	private BufferedImage		img_move_right		= ImageLoader.stickman_move_right;
+	
+	private int player = 1;
 
-	public Stickman() {
+	public Stickman(int player) {
 		super(new Vector2d(GameEngine.WIDTH / 2, 100));
+		this.player = player;
+		
+		if(player == 1){
+			setCoordinates(20, 100);
+		} else {
+			lookLeft = true;
+			setCoordinates(GameEngine.WIDTH - 20, 100);
+		}
 	}
 
 	@Override
 	public boolean update(int delta) {
-		if (Game.VK_LEFT) {
-			dx = -0.05;
-			lookLeft = true;
-			animationTime += delta;
+		if (player == 1){
+				
+			if (Game.VK_LEFT) {
+				dx = -0.05;
+				lookLeft = true;
+				animationTime += delta;
+			}
+			if (Game.VK_RIGHT) {
+				dx = 0.05;
+				lookLeft = false;
+				animationTime += delta;
+			}
+			if (Game.g.jumpButtonPressed(1) && !isFalling())
+				dy = -0.6;
+			if (Game.VK_O)
+				setCoordinates(GameEngine.WIDTH / 2, GameEngine.HEIGHT / 2);
+	
+			if (Game.VK_UP && fireballCooldown < 0) {
+				shootFireball();
+				fireballCooldown = FIREBALLCOOLDOWN;
+			}
+			
+			fireballCooldown -= delta;
+	
+			if (animationTime >= 100 * 4)
+				animationTime = 0;
+	
+			// return isAlive();
+			return super.update(delta);
+		} else {
+				
+			if (Game.VK_A) {
+				dx = -0.05;
+				lookLeft = true;
+				animationTime += delta;
+			}
+			if (Game.VK_D) {
+				dx = 0.05;
+				lookLeft = false;
+				animationTime += delta;
+			}
+			if (Game.g.jumpButtonPressed(2) && !isFalling())
+				dy = -0.6;
+			if (Game.VK_O)
+				setCoordinates(GameEngine.WIDTH / 2, GameEngine.HEIGHT / 2);
+	
+			if (Game.VK_W && fireballCooldown < 0) {
+				shootFireball();
+				fireballCooldown = FIREBALLCOOLDOWN;
+			}
+			
+			fireballCooldown -= delta;
+	
+			if (animationTime >= 100 * 4)
+				animationTime = 0;
+	
+			// return isAlive();
+			return super.update(delta);
 		}
-		if (Game.VK_RIGHT) {
-			dx = 0.05;
-			lookLeft = false;
-			animationTime += delta;
-		}
-		if (Game.g.jumpButtonPressed(2) && !isFalling())
-			dy = -0.6;
-		if (Game.VK_A)
-			setCoordinates(GameEngine.WIDTH / 2, GameEngine.HEIGHT / 2);
-
-		if (Game.VK_UP && fireballCooldown < 0) {
-			shootFireball();
-			fireballCooldown = FIREBALLCOOLDOWN;
-		}
-
-		fireballCooldown -= delta;
-
-		if (animationTime >= 100 * 4)
-			animationTime = 0;
-
-		// return isAlive();
-		return super.update(delta);
 	}
 
 	@Override
@@ -69,6 +111,9 @@ public class Stickman extends CollisionEntity {
 	}
 
 	public void shootFireball() {
-		Game.g.addEntity(new Fireball(pos.copy(), new Vector2d(1, 0)));
+		if(lookLeft)
+			Game.g.addEntity(new Fireball(pos.copy(), new Vector2d(-1, 0)));
+		else
+			Game.g.addEntity(new Fireball(pos.copy(), new Vector2d(1, 0)));
 	}
 }

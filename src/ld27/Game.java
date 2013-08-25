@@ -17,12 +17,17 @@ public class Game {
 	public static boolean		VK_RIGHT;
 	public static boolean		VK_W;
 	public static boolean		VK_A;
+	public static boolean		VK_S;
+	public static boolean		VK_D;
 	public static boolean		VK_CTRL;
+	public static boolean 		VK_O;
+	public static boolean VK_SPACE;
 
 	private final int			HEIGHT		= GameEngine.HEIGHT;
 	private final int			WIDTH		= GameEngine.WIDTH;
 
-	public Stickman				player		= new Stickman();
+	public Stickman				player1		= new Stickman(1);
+	public Stickman				player2		= new Stickman(2);
 
 	public List<Entity>			entities	= new ArrayList<>();
 
@@ -30,8 +35,9 @@ public class Game {
 	}
 
 	public void update(int delta) {
-		player.update(delta);
-
+		player1.update(delta);
+		player2.update(delta);
+		
 		List<Entity> dyingEntities = new ArrayList<>();
 
 		for (Entity e : entities) {
@@ -46,8 +52,9 @@ public class Game {
 	public void render(Graphics g) {
 		World.w.render(g);
 
-		player.render(g);
-
+		player1.render(g);
+		player2.render(g);
+		
 		for (Entity e : entities) {
 			e.render(g);
 		}
@@ -57,10 +64,12 @@ public class Game {
 
 	public boolean jumpButtonPressed(int player) {
 		if (player == 1) {
-			return false;
-		} else if (player == 2) {
 			boolean tmp = VK_CTRL;
 			VK_CTRL = false;
+			return tmp;
+		} else if (player == 2) {
+			boolean tmp = VK_SPACE;
+			VK_SPACE = false;
 			return tmp;
 		} else {
 			return false;

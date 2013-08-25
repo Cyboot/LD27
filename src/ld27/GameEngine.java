@@ -34,8 +34,8 @@ public class GameEngine extends Canvas implements KeyListener, Runnable {
 		frame.setContentPane(panel);
 		frame.pack();
 		frame.setResizable(false);
-		// frame.setLocationRelativeTo(null);
-		frame.setLocation(2000, 350);
+		frame.setLocationRelativeTo(null);
+//		frame.setLocation(2000, 350);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 		engine.start();
@@ -132,6 +132,18 @@ public class GameEngine extends Canvas implements KeyListener, Runnable {
 		case KeyEvent.VK_A:
 			Game.VK_A = true;
 			break;
+		case KeyEvent.VK_S:
+			Game.VK_S = true;
+			break;
+		case KeyEvent.VK_D:
+			Game.VK_D = true;
+			break;
+		case KeyEvent.VK_SPACE:
+			Game.VK_SPACE = true;
+			break;
+		case KeyEvent.VK_O:
+			Game.VK_O = true;
+			break;
 		case KeyEvent.VK_CONTROL:
 			if (!jump2)
 				Game.VK_CTRL = true;
@@ -163,6 +175,18 @@ public class GameEngine extends Canvas implements KeyListener, Runnable {
 			break;
 		case KeyEvent.VK_A:
 			Game.VK_A = false;
+			break;
+		case KeyEvent.VK_S:
+			Game.VK_S = false;
+			break;
+		case KeyEvent.VK_D:
+			Game.VK_D = false;
+			break;
+		case KeyEvent.VK_SPACE:
+			Game.VK_SPACE = false;
+			break;
+		case KeyEvent.VK_O:
+			Game.VK_O = false;
 			break;
 		case KeyEvent.VK_CONTROL:
 			Game.VK_CTRL = false;
